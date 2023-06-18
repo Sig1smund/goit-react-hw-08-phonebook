@@ -1,0 +1,23 @@
+.navBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.link {
+    display: inline-block;
+    text-decoration: none;
+    padding: 12px;
+    font-weight: 500;
+    color: #fff;
+    font-size: 18px;
+}
+
+.active {
+    display: inline-block;
+    text-decoration: none;
+    padding: 12px;
+    font-weight: 500;
+    font-size: 18px;
+    color: orange;
+}

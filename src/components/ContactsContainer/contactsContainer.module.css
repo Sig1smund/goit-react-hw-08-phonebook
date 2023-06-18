@@ -1,0 +1,21 @@
+.container {
+    width: 1200px;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.form_container {
+    width: 500px;
+    padding: 15px;
+    margin: 0;
+    align-content: center;
+}
+
+.title {
+    margin: 0;
+    margin-bottom: 10px;
+    color: blue;
+}
