@@ -1,12 +1,16 @@
 import { useReducer } from 'react';
+import { addContact } from '../../redux/contacts/operations';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectAllContacts } from '../../redux/contacts/selectors';
 import { ToastContainer, toast } from 'react-toastify';
 import { isEqual } from 'lodash';
-import {
-  useAddContactMutation,
-  useFetchContactsQuery,
-} from '../../redux/contacts/contactApi';
+// import { contactApi } from '../../redux/contacts/contactApi';
+// import { useAddContactMutation, useFetchContactsQuery } from '../../redux/contacts/contactApi';
 import s from './contactForm.module.css';
 import 'react-toastify/dist/ReactToastify.css';
+// import { useDispatch } from 'react-redux';
+// import { useSelector } from 'react-redux';
+// import { selectAllContacts } from '../../redux/contacts/selectors';
 
 
 const initialState = {
@@ -38,8 +42,8 @@ function reducer(state, action) {
 
 export default function ContactForm() {
   const [state, dispatchAction] = useReducer(reducer, initialState);
-  const [addContact] = useAddContactMutation();
-  const { data } = useFetchContactsQuery();
+  const contacts = useSelector(selectAllContacts);
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -50,7 +54,7 @@ export default function ContactForm() {
   };
 
   const preventDublicate = (number) => {
-    const result = data.find(user => {
+    const result = contacts.find(user => {
       if (user.number === number) {
         return user
       }
@@ -59,17 +63,20 @@ export default function ContactForm() {
     return result.name;
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const newContact = { name: state.name, number: state.number };
+    try {
+      const test = contacts.some(user => isEqual(newContact.number, user.number));
+      !test
+        ? await dispatch(addContact(newContact)) && toast.success('Contact added successfully')
+        : toast.error
+          (`Number ${newContact.number} is already been used in "${preventDublicate(newContact.number)}"!`);
+      dispatchAction({ type: 'reset' })
+    } catch (error) {
+      console.log(error);
+    }
 
-    const test = data.some(user => isEqual(newContact.number, user.number));
-    !test
-      ? addContact(newContact) && toast.success('Contact added successfully')
-      : toast.error
-        (`Number ${newContact.number} is already been used in "${preventDublicate(newContact.number)}"!`);
-    dispatchAction({ type: 'reset' })
-      
   };
 
   return (
