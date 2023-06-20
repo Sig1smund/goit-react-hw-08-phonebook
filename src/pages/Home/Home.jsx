@@ -1,5 +1,4 @@
-// import propTypes from "prop-types";
-import HomePage from "../../components/StartingScreen"
+import HomePage from "../../components/HomePage"
 
 export default function Home() {
     return (

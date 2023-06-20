@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import s from './startingScreen.module.css';
+import s from './homePage.module.css';
 
 export default function HomePage() {
     return (
