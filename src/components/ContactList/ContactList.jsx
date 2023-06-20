@@ -42,7 +42,7 @@ export default function ContactList() {
               disabled={deleting}
               className={s.button}
               type="button"
-              onClick={() => deleteContact(elem.id) && toast.success(`Contact ${elem.name} deleted`)}
+              onClick={() => deleteContact(elem.id) && toast.success(`Contact '${elem.name}' deleted`)}
             >
               Delete
             </button>

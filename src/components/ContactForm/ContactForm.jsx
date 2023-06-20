@@ -65,7 +65,7 @@ export default function ContactForm() {
       return toast.error
       (`Number ${newContact.number} is already been used in "${preventDublicate(newContact.number)}"!`);
     }
-    return addContact(newContact) && toast.success('Contact added successfully')
+    return addContact(newContact) && toast.success(`Contact '${newContact.name}' added successfully`)
   };
 
   return (

@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
-import { BrowserRouter as Router } from 'react-router-dom';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import Spinner from './utils/Spinner';
@@ -16,9 +15,7 @@ root.render(
 	<React.StrictMode>
 		<Provider store={store}>
 			<PersistGate loading={<Spinner />} persistor={persistor}>
-				<Router basename="/goit-react-hw-08-phonebook/">
-					<App />
-				</Router>
+				<App />
 			</PersistGate>
 		</Provider>
 	</React.StrictMode>
