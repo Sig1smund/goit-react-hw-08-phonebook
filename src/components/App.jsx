@@ -8,10 +8,6 @@ import Spinner from "../utils/Spinner";
 import { refreshUser } from '../redux/auth/operations';
 import { RestrictedRoute } from './RestrictedRoute';
 import { PrivateRoute } from './PrivateRoute';
-// import ContactForm from "./ContactForm";
-// import Filter from "./Filter";
-// import ContactList from "./ContactList";
-// import s from './ContactForm/contactForm.module.css'
 
 const Home = lazy(() => import('../pages/Home'));
 const Register = lazy(() => import('../pages/Register'));
@@ -20,7 +16,7 @@ const Contacts = lazy(() => import('../pages/Contacts'));
 const NotFound = lazy(() => import('../pages/NotFound'));
 
 export default function App() {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { isRefreshing } = useAuth();
 
   useEffect(() => {
