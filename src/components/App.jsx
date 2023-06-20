@@ -20,11 +20,11 @@ export const router = createBrowserRouter(
       ? <Spinner />
       : <Route element={<Layout />}>
         <Route index path="/" element={<Home />} />
-        <Route path="/register" element={
+        <Route path="register" element={
           <RestrictedRoute redirectTo='/contacts' component={<Register />} />} />
-        <Route path="/login" element={
+        <Route path="login" element={
           <RestrictedRoute redirectTo='/contacts' component={<Login />} />} />
-        <Route path="/contacts" element={
+        <Route path="contacts" element={
           <PrivateRoute redirectTo="/login" component={<Contacts />} />} />
         <Route path='/*' element={<NotFound />} />
       </Route>
