@@ -15,4 +15,4 @@ export const filterSlice = createSlice({
 });
 
 export const { input } = filterSlice.actions;
-export const filter = state => state.filter.value;
+export const selectFilter = state => state.filter.value;

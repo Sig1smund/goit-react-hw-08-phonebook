@@ -1,29 +1,18 @@
-import { useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { removeContact, fetchContacts } from "../../redux/contacts/operations";
-import { selectAllContacts, selectIsDeleting, selectIsLoading, selectFilter } from "../../redux/contacts/selectors";
-// import { selectAllContacts } from "../../redux/contacts/selectors";
-import { useDispatch } from "react-redux";
-// import { filter } from '../../redux/contacts/filterSlice';
-// import { useDeleteContactMutation, useFetchContactsQuery } from '../../redux/contacts/contactApi';
+import { useDeleteContactMutation, useFetchContactsQuery } from '../../redux/contacts/contactApi';
 import { ToastContainer, toast } from 'react-toastify';
+import { selectFilter } from "../../redux/contacts/filterSlice";
 import Spinner from '../../utils/Spinner'
 import s from './contactList.module.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function ContactList() {
   const filtered = useSelector(selectFilter);
-  const contacts = useSelector(selectAllContacts)
-  const isDeleting = useSelector(selectIsDeleting)
-  const isLoading = useSelector(selectIsLoading)
-  const dispatch = useDispatch();
+  const [deleteContact, {isLoading: deleting}] = useDeleteContactMutation();
+  const { data: contacts, isFetching } = useFetchContactsQuery();
 
-useEffect(() => {
-  dispatch(fetchContacts())
-}, [contacts, dispatch])
-
-  
-  const getContacts = useMemo(
+  const prepareContacts = useMemo(
     () => () => {
       if (!contacts) {
         return;
@@ -40,27 +29,27 @@ useEffect(() => {
     [contacts, filtered]
   );
 
-  const getAllContacts = getContacts();
+  const readyToRenderContacts = prepareContacts();
 
   return (
     <ul className={s.list__block}>
-      {isLoading && <Spinner />}
-      {!isLoading && getAllContacts.map(elem => {
+      {isFetching && <Spinner />}
+      {readyToRenderContacts && readyToRenderContacts.map(elem => {
         return (
           <li key={elem.id} className={s.contacts__item}>
             {elem.name}: {elem.number}
             <button
-              disabled={isDeleting}
+              disabled={deleting}
               className={s.button}
               type="button"
-              onClick={() => dispatch(removeContact(elem.id)) && toast.success(`Contact ${elem.name} deleted`)}
+              onClick={() => deleteContact(elem.id) && toast.success(`Contact ${elem.name} deleted`)}
             >
               Delete
             </button>
           </li>
         );
       })}
-      {isDeleting && <ToastContainer
+      {deleting && <ToastContainer
         position="top-center"
         autoClose={1500} />}
     </ul>

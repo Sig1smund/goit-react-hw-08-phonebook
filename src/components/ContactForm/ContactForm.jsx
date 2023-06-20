@@ -1,16 +1,9 @@
 import { useReducer } from 'react';
-import { addContact } from '../../redux/contacts/operations';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectAllContacts } from '../../redux/contacts/selectors';
 import { ToastContainer, toast } from 'react-toastify';
 import { isEqual } from 'lodash';
-// import { contactApi } from '../../redux/contacts/contactApi';
-// import { useAddContactMutation, useFetchContactsQuery } from '../../redux/contacts/contactApi';
+import { useAddContactMutation, useFetchContactsQuery } from '../../redux/contacts/contactApi';
 import s from './contactForm.module.css';
 import 'react-toastify/dist/ReactToastify.css';
-// import { useDispatch } from 'react-redux';
-// import { useSelector } from 'react-redux';
-// import { selectAllContacts } from '../../redux/contacts/selectors';
 
 
 const initialState = {
@@ -42,8 +35,8 @@ function reducer(state, action) {
 
 export default function ContactForm() {
   const [state, dispatchAction] = useReducer(reducer, initialState);
-  const contacts = useSelector(selectAllContacts);
-  const dispatch = useDispatch();
+  const [addContact] = useAddContactMutation();
+  const { data: contacts } = useFetchContactsQuery();
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -63,20 +56,16 @@ export default function ContactForm() {
     return result.name;
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const newContact = { name: state.name, number: state.number };
-    try {
-      const test = contacts.some(user => isEqual(newContact.number, user.number));
-      !test
-        ? await dispatch(addContact(newContact)) && toast.success('Contact added successfully')
-        : toast.error
-          (`Number ${newContact.number} is already been used in "${preventDublicate(newContact.number)}"!`);
-      dispatchAction({ type: 'reset' })
-    } catch (error) {
-      console.log(error);
+    const newContact = state;
+    const test = contacts.some(user => isEqual(newContact.number, user.number));
+    dispatchAction({ type: 'reset' })
+    if (test) {
+      return toast.error
+      (`Number ${newContact.number} is already been used in "${preventDublicate(newContact.number)}"!`);
     }
-
+    return addContact(newContact) && toast.success('Contact added successfully')
   };
 
   return (
@@ -91,7 +80,7 @@ export default function ContactForm() {
             name="name"
             value={state.name}
             onChange={handleChange}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
           />
@@ -106,7 +95,7 @@ export default function ContactForm() {
             name="number"
             value={state.number}
             onChange={handleChange}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
           />
