@@ -7,8 +7,7 @@ export default function NotFound() {
       <div className={s.container}>
          <h1 className={s.title}>Русский военный корабль, иди на#уй!</h1>
          <div className={s.navigation}>
-            <NavLink className={s.link} to='/login'>Login</NavLink>
-            <NavLink className={s.link} to='/register'>Register</NavLink>
+            <NavLink className={s.link} to='/'>Become human</NavLink>
          </div>
       </div> 
    );
