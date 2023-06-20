@@ -16,7 +16,7 @@ root.render(
 	<React.StrictMode>
 		<Provider store={store}>
 			<PersistGate loading={<Spinner />} persistor={persistor}>
-				<Router basename="/goit-react-hw-08-phonebook">
+				<Router basename="/goit-react-hw-08-phonebook/">
 					<App />
 				</Router>
 			</PersistGate>
